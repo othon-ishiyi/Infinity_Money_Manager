@@ -5,11 +5,11 @@ import java.sql.DriverManager
 
 class DatabaseManager{
     private val serverName = "localhost"
-    private val portNumber = "3306"
+    private val databaseName = "infinity"
 
     fun createConnection(): Connection{
         val connection = DriverManager.getConnection(
-            "jdbc:mysql://$serverName/$portNumber",
+            "jdbc:mysql://$serverName/$databaseName",
             "root",
             "infinity"
         )
