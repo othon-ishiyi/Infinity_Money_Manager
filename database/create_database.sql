@@ -73,10 +73,9 @@ CREATE TABLE IF NOT EXISTS `infinity`.`gastos_fixos` (
   `categoria` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
   `data` DATE NULL DEFAULT NULL,
-  `metas_id` INT NULL,
+  `metas_id` INT NULL DEFAULT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `metas_id_UNIQUE` (`metas_id` ASC) VISIBLE,
   CONSTRAINT `fk_metas_id`
     FOREIGN KEY (`metas_id`)
     REFERENCES `infinity`.`metas` (`id`))
@@ -94,10 +93,9 @@ CREATE TABLE IF NOT EXISTS `infinity`.`gastos_variaveis` (
   `categoria` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
   `data` DATE NULL DEFAULT NULL,
-  `metas_id` INT NULL,
+  `metas_id` INT NULL DEFAULT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `metas_id_UNIQUE` (`metas_id` ASC) VISIBLE,
   CONSTRAINT `fk_metas_id`
     FOREIGN KEY (`metas_id`)
     REFERENCES `infinity`.`metas` (`id`))
