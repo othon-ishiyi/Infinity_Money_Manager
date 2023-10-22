@@ -16,4 +16,8 @@ class DatabaseManager{
         println("Connection made with success.")
         return connection
     }
+
+    fun insertMeta(connection: Connection, meta: Meta){
+
+    }
 }

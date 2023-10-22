@@ -1,10 +1,11 @@
 package com.example.infinitymoneymanager
 import java.lang.Exception
+import java.sql.Date
 
 fun main(){
     try{
         Class.forName("com.mysql.cj.jdbc.Driver")
-        var dbManager = DatabaseManager();
+        val dbManager = DatabaseManager();
         val connection = dbManager.createConnection();
     } catch (e: Exception) {
         e.printStackTrace()
