@@ -17,9 +17,9 @@ class DatabaseManager{
         }
         @JvmStatic
         fun insert(databaseObject: DatabaseObject, connection: Connection){
-            val name = databaseObject.name
-            val sqlColumns = databaseObject.sqlColumns
-            val sqlTable = databaseObject.sqlTable
+            val name = databaseObject.getObjectName()
+            val sqlColumns = databaseObject.getSqlColumnsNames()
+            val sqlTable = databaseObject.getSqlTableName()
             val numberOfColumns = sqlColumns.split(",").size
             val sqlInterrogations = "(" + "?,".repeat(numberOfColumns - 1) + "?)"
             val statement = "INSERT INTO $sqlTable $sqlColumns VALUES $sqlInterrogations"
@@ -30,8 +30,8 @@ class DatabaseManager{
         }
         @JvmStatic
         fun delete(databaseObject: DatabaseObject, whereCondition: String, connection: Connection){
-            val name = databaseObject.name
-            val sqlTable = databaseObject.sqlTable
+            val name = databaseObject.getObjectName()
+            val sqlTable = databaseObject.getSqlTableName()
             val statement = "DELETE FROM $sqlTable WHERE $whereCondition"
             val query = connection.prepareStatement(statement)
             query.execute()
