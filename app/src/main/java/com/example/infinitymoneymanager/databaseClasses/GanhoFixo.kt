@@ -4,12 +4,12 @@ import java.sql.Date
 import java.sql.PreparedStatement
 
 class GanhoFixo(
-    private var id: Int,
-    private var periodicidade: String,
-    private var valor: Double,
-    private var fonte: String,
-    private var descricao: String,
-    private var data: Date
+    private var id: Int = 0,
+    private var periodicidade: String = "Mensal",
+    private var valor: Double = 0.0,
+    private var fonte: String = "Outro",
+    private var descricao: String = "",
+    private var data: Date = Date(0)
 ) : DatabaseObject() {
     override val name: String
         get() = "Ganho Fixo"

@@ -4,13 +4,13 @@ import java.sql.Date
 import java.sql.PreparedStatement
 
 class GastoFixo(
-    private var id: Int,
-    private var periodicidade: String,
-    private var valor: Double,
-    private var categoria: String,
-    private var descricao: String,
-    private var data: Date,
-    private var metasId: Int
+    private var id: Int = 0,
+    private var periodicidade: String = "Mensal",
+    private var valor: Double = 0.0,
+    private var categoria: String = "Outro",
+    private var descricao: String = "",
+    private var data: Date = Date(0),
+    private var metasId: Int = 0
 ) : DatabaseObject() {
     override val name: String
         get() = "Gasto Fixo"

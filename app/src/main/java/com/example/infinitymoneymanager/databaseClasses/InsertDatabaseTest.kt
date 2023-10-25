@@ -6,33 +6,33 @@ fun main(){
     val connection = DatabaseManager.createConnection()
 
     val meta = Meta(
-        9,
+        10,
         "Teste", 2.00,
         1.00,
         Date(10000)
     )
-    meta.insertIntoDatabase(connection)
+    DatabaseManager.insert(meta, connection)
 
     val ganhoFixo = GanhoFixo(
-        9,
+        10,
         "Mensal",
         1.0, "Trabalho",
         "teste",
         Date(1000000)
     )
-    ganhoFixo.insertIntoDatabase(connection)
+    DatabaseManager.insert(ganhoFixo, connection)
 
     val ganhoVariavel = GanhoVariavel(
-        9,
+        10,
         1.0,
         "Trabalho",
         "teste",
         Date(1000000)
     )
-    ganhoVariavel.insertIntoDatabase(connection)
+    DatabaseManager.insert(ganhoVariavel, connection)
 
     val gastoFixo = GastoFixo(
-        9,
+        10,
         "Mensal",
         1.0,
         "Carro",
@@ -40,17 +40,17 @@ fun main(){
         Date(1000000),
         3
     )
-    gastoFixo.insertIntoDatabase(connection)
+    DatabaseManager.insert(gastoFixo, connection)
 
     val gastoVariavel = GastoVariavel(
-        9,
+        10,
         1.0,
         "Carro",
         "teste",
         Date(1000000),
         2
     )
-    gastoVariavel.insertIntoDatabase(connection)
+    DatabaseManager.insert(gastoVariavel, connection)
 
     connection.close()
 }
