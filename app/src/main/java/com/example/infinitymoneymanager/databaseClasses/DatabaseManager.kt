@@ -1,25 +1,24 @@
-package com.example.infinitymoneymanager
+package com.example.infinitymoneymanager.databaseClasses
 
-import androidx.compose.runtime.Composable
 import java.sql.Connection
 import java.sql.DriverManager
 
 class DatabaseManager{
     companion object {
+        @Volatile
+        private var connection: Connection? = null
+
         @JvmStatic
-        fun createConnection(): Connection {
-            val connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost/infinity",
-                "root",
-                "infinity"
-            )
+        fun getConnection(): Connection {
+            if(connection == null) {
+                connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost/infinity",
+                    "root",
+                    "infinity"
+                )
+            }
             println("Connection made with success.")
-            return connection
-        }
-
-        @JvmStatic
-        fun deleteFromDatabase(){
-
+            return connection!!
         }
     }
 }

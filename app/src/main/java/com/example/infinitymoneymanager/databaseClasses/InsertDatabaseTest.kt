@@ -1,13 +1,12 @@
 package com.example.infinitymoneymanager.databaseClasses
 
-import com.example.infinitymoneymanager.DatabaseManager
 import java.sql.Date
 
 fun main(){
-    val connection = DatabaseManager.createConnection()
+    val connection = DatabaseManager.getConnection()
 
     val meta = Meta(
-        7,
+        8,
         "Teste", 2.00,
         1.00,
         Date(10000)
@@ -15,7 +14,7 @@ fun main(){
     meta.insertIntoDatabase(connection)
 
     val ganhoFixo = GanhoFixo(
-        7,
+        8,
         "Mensal",
         1.0, "Trabalho",
         "teste",
@@ -24,7 +23,7 @@ fun main(){
     ganhoFixo.insertIntoDatabase(connection)
 
     val ganhoVariavel = GanhoVariavel(
-        7,
+        8,
         1.0,
         "Trabalho",
         "teste",
@@ -33,7 +32,7 @@ fun main(){
     ganhoVariavel.insertIntoDatabase(connection)
 
     val gastoFixo = GastoFixo(
-        7,
+        8,
         "Mensal",
         1.0,
         "Carro",
@@ -44,7 +43,7 @@ fun main(){
     gastoFixo.insertIntoDatabase(connection)
 
     val gastoVariavel = GastoVariavel(
-        7,
+        8,
         1.0,
         "Carro",
         "teste",
