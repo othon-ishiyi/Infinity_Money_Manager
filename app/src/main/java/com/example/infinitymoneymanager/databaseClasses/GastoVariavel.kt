@@ -10,7 +10,7 @@ class GastoVariavel(
     private var descricao: String,
     private var data: Date,
     private var metasId: Int
-    ) {
+): DatabaseObject {
     fun getId(): Int {return id}
     fun getValor(): Double {return valor}
     fun getCategoria(): String {return categoria}
@@ -18,7 +18,7 @@ class GastoVariavel(
     fun getData(): Date {return data}
     fun getMetasId(): Int {return metasId}
 
-    fun insertIntoDatabase(connection: Connection){
+    override fun insertIntoDatabase(connection: Connection){
         val insertGastoVariavelSql = "INSERT INTO gastos_variaveis" +
                 "(id, valor, categoria, descricao, data, metas_id)" +
                 "VALUES (?, ?, ?, ?, ?, ?)"
@@ -34,4 +34,7 @@ class GastoVariavel(
         println("Gasto Variável successfully inserted.")
     }
 
+    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
+        TODO("Not yet implemented")
+    }
 }

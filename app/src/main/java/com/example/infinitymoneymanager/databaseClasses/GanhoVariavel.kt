@@ -9,14 +9,14 @@ class GanhoVariavel(
     private var fonte: String,
     private var descricao: String,
     private var data: Date
-) {
+) : DatabaseObject{
     fun getId(): Int {return id}
     fun getValor(): Double {return valor}
     fun getFonte(): String {return fonte}
     fun getDescricao(): String {return descricao}
     fun getData(): Date {return data}
 
-    fun insertIntoDatabase(connection: Connection){
+    override fun insertIntoDatabase(connection: Connection){
         val insertGanhoVariavelSql = "INSERT INTO ganhos_variaveis" +
                 "(id, valor, fonte, descricao, data)" +
                 "VALUES (?, ?, ?, ?, ?)"
@@ -29,5 +29,9 @@ class GanhoVariavel(
         queryInsertGanhoVariavel.execute()
 
         println("Ganho Variável successfully inserted.")
+    }
+
+    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
+        TODO("Not yet implemented")
     }
 }

@@ -16,5 +16,10 @@ class DatabaseManager{
             println("Connection made with success.")
             return connection
         }
+
+        @JvmStatic
+        fun deleteFromDatabase(){
+
+        }
     }
 }

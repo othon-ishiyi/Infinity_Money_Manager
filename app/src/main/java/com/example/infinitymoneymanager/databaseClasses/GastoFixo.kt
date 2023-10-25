@@ -11,7 +11,7 @@ class GastoFixo(
     private var descricao: String,
     private var data: Date,
     private var metasId: Int
-    ) {
+) : DatabaseObject {
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}
     fun getValor(): Double {return valor}
@@ -20,7 +20,7 @@ class GastoFixo(
     fun getData(): Date {return data}
     fun getMetasId(): Int {return metasId}
 
-    fun insertIntoDatabase(connection: Connection){
+    override fun insertIntoDatabase(connection: Connection){
         val insertGastoFixoSql = "INSERT INTO gastos_fixos" +
                 "(id, periodicidade, valor, categoria, descricao, data, metas_id)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -35,5 +35,9 @@ class GastoFixo(
         queryInsertGastoFixo.execute()
 
         println("Gasto Fixo successfully inserted.")
+    }
+
+    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
+        TODO("Not yet implemented")
     }
 }

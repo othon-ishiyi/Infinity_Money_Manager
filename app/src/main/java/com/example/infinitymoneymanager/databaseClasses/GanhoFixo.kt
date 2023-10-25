@@ -10,7 +10,7 @@ class GanhoFixo(
     private var fonte: String,
     private var descricao: String,
     private var data: Date
-) {
+) : DatabaseObject {
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}
     fun getValor(): Double {return valor}
@@ -18,7 +18,7 @@ class GanhoFixo(
     fun getDescricao(): String {return descricao}
     fun getData(): Date {return data}
 
-    fun insertIntoDatabase(connection: Connection){
+    override fun insertIntoDatabase(connection: Connection){
         val insertGanhoFixoSql = "INSERT INTO ganhos_fixos" +
                 "(id, periodicidade, valor, fonte, descricao, data)" +
                 "VALUES (?, ?, ?, ?, ?, ?)"
@@ -33,4 +33,9 @@ class GanhoFixo(
 
         println("Ganho Fixo successfully inserted.")
     }
+
+    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
+        TODO("Not yet implemented")
+    }
+
 }
