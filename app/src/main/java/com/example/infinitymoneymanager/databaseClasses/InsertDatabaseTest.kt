@@ -5,8 +5,7 @@ import com.example.infinitymoneymanager.Meta
 import java.sql.Date
 
 fun main(){
-    val dbManager = DatabaseManager()
-    val connection = dbManager.createConnection()
+    val connection = DatabaseManager.createConnection()
 
     val meta = Meta(
         6,

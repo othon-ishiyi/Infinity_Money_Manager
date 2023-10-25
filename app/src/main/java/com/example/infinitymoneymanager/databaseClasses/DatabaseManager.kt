@@ -1,19 +1,20 @@
 package com.example.infinitymoneymanager
 
+import androidx.compose.runtime.Composable
 import java.sql.Connection
 import java.sql.DriverManager
 
 class DatabaseManager{
-    private val serverName = "localhost"
-    private val databaseName = "infinity"
-
-    fun createConnection(): Connection{
-        val connection = DriverManager.getConnection(
-            "jdbc:mysql://$serverName/$databaseName",
-            "root",
-            "infinity"
-        )
-        println("Connection made with success.")
-        return connection
+    companion object {
+        @JvmStatic
+        fun createConnection(): Connection {
+            val connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost/infinity",
+                "root",
+                "infinity"
+            )
+            println("Connection made with success.")
+            return connection
+        }
     }
 }
