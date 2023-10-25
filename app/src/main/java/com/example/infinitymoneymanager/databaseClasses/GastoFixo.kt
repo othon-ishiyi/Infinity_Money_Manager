@@ -1,7 +1,7 @@
 package com.example.infinitymoneymanager.databaseClasses
 
-import java.sql.Connection
 import java.sql.Date
+import java.sql.PreparedStatement
 
 class GastoFixo(
     private var id: Int,
@@ -11,7 +11,14 @@ class GastoFixo(
     private var descricao: String,
     private var data: Date,
     private var metasId: Int
-) : DatabaseObject {
+) : DatabaseObject() {
+    override val name: String
+        get() = "Gasto Fixo"
+    override val sqlTable: String
+        get() = "gastos_fixos"
+    override val sqlColumns: String
+        get() = "(id, periodicidade, valor, categoria, descricao, data, metas_id)"
+
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}
     fun getValor(): Double {return valor}
@@ -20,24 +27,13 @@ class GastoFixo(
     fun getData(): Date {return data}
     fun getMetasId(): Int {return metasId}
 
-    override fun insertIntoDatabase(connection: Connection){
-        val insertGastoFixoSql = "INSERT INTO gastos_fixos" +
-                "(id, periodicidade, valor, categoria, descricao, data, metas_id)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)"
-        val queryInsertGastoFixo = connection.prepareStatement(insertGastoFixoSql)
-        queryInsertGastoFixo.setInt(1, this.getId())
-        queryInsertGastoFixo.setString(2, this.getPeriodicidade())
-        queryInsertGastoFixo.setDouble(3, this.getValor())
-        queryInsertGastoFixo.setString(4, this.getCategoria())
-        queryInsertGastoFixo.setString(5, this.getDescricao())
-        queryInsertGastoFixo.setDate(6, this.getData())
-        queryInsertGastoFixo.setInt(7, this.getMetasId())
-        queryInsertGastoFixo.execute()
-
-        println("Gasto Fixo successfully inserted.")
-    }
-
-    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
-        TODO("Not yet implemented")
+    override fun setQueryVariables(query: PreparedStatement) {
+        query.setInt(1, this.getId())
+        query.setString(2, this.getPeriodicidade())
+        query.setDouble(3, this.getValor())
+        query.setString(4, this.getCategoria())
+        query.setString(5, this.getDescricao())
+        query.setDate(6, this.getData())
+        query.setInt(7, this.getMetasId())
     }
 }

@@ -1,7 +1,7 @@
 package com.example.infinitymoneymanager.databaseClasses
 
 import java.sql.Date
-import java.sql.Connection
+import java.sql.PreparedStatement
 
 class GanhoFixo(
     private var id: Int,
@@ -10,7 +10,14 @@ class GanhoFixo(
     private var fonte: String,
     private var descricao: String,
     private var data: Date
-) : DatabaseObject {
+) : DatabaseObject() {
+    override val name: String
+        get() = "Ganho Fixo"
+    override val sqlTable: String
+        get() = "ganhos_fixos"
+    override val sqlColumns: String
+        get() = "(id, periodicidade, valor, fonte, descricao, data)"
+
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}
     fun getValor(): Double {return valor}
@@ -18,24 +25,12 @@ class GanhoFixo(
     fun getDescricao(): String {return descricao}
     fun getData(): Date {return data}
 
-    override fun insertIntoDatabase(connection: Connection){
-        val insertGanhoFixoSql = "INSERT INTO ganhos_fixos" +
-                "(id, periodicidade, valor, fonte, descricao, data)" +
-                "VALUES (?, ?, ?, ?, ?, ?)"
-        val queryInsertGanhoFixo = connection.prepareStatement(insertGanhoFixoSql)
-        queryInsertGanhoFixo.setInt(1, this.getId())
-        queryInsertGanhoFixo.setString(2, this.getPeriodicidade())
-        queryInsertGanhoFixo.setDouble(3, this.getValor())
-        queryInsertGanhoFixo.setString(4, this.getFonte())
-        queryInsertGanhoFixo.setString(5, this.getDescricao())
-        queryInsertGanhoFixo.setDate(6, this.getData())
-        queryInsertGanhoFixo.execute()
-
-        println("Ganho Fixo successfully inserted.")
+    override fun setQueryVariables(query: PreparedStatement) {
+        query.setInt(1, this.getId())
+        query.setString(2, this.getPeriodicidade())
+        query.setDouble(3, this.getValor())
+        query.setString(4, this.getFonte())
+        query.setString(5, this.getDescricao())
+        query.setDate(6, this.getData())
     }
-
-    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
-        TODO("Not yet implemented")
-    }
-
 }

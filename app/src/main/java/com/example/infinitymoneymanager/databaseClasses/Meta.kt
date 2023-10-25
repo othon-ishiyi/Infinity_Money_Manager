@@ -1,8 +1,7 @@
-package com.example.infinitymoneymanager
+package com.example.infinitymoneymanager.databaseClasses
 
-import com.example.infinitymoneymanager.databaseClasses.DatabaseObject
-import java.sql.Connection
 import java.sql.Date
+import java.sql.PreparedStatement
 
 class Meta(
     private var id: Int,
@@ -10,30 +9,24 @@ class Meta(
     private var valorAlvo: Double,
     private var valorArrecadado: Double,
     private var prazo: Date
-): DatabaseObject {
+): DatabaseObject() {
+    override val name: String
+        get() = "Meta"
+    override val sqlTable: String
+        get() = "metas"
+    override val sqlColumns: String
+        get() = "(id, nome, valor_alvo, valor_arrecadado, prazo)"
+
+    override fun setQueryVariables(query: PreparedStatement) {
+        query.setInt(1, this.getId())
+        query.setString(2, this.getNome())
+        query.setDouble(3, this.getValorAlvo())
+        query.setDouble(4, this.getValorArrecadado())
+        query.setDate(5, this.getPrazo())
+    }
     fun getId(): Int {return id}
     fun getNome(): String {return nome}
     fun getValorAlvo(): Double {return valorAlvo}
     fun getValorArrecadado(): Double {return valorArrecadado}
     fun getPrazo(): Date {return prazo}
-
-    override fun insertIntoDatabase(connection: Connection){
-        val insertMetaSql = "INSERT INTO metas " +
-                "(id, nome, valor_alvo, valor_arrecadado, prazo) " +
-                "VALUES (?, ?, ?, ?, ?)"
-
-        val queryInsertMeta = connection.prepareStatement(insertMetaSql)
-        queryInsertMeta.setInt(1, this.getId())
-        queryInsertMeta.setString(2, this.getNome())
-        queryInsertMeta.setDouble(3, this.getValorAlvo())
-        queryInsertMeta.setDouble(4, this.getValorArrecadado())
-        queryInsertMeta.setDate(5, this.getPrazo())
-        queryInsertMeta.execute()
-
-        println("Meta successfully inserted.")
-    }
-
-    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
-        TODO("Not yet implemented")
-    }
 }

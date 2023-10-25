@@ -1,7 +1,7 @@
 package com.example.infinitymoneymanager.databaseClasses
 
-import java.sql.Connection
 import java.sql.Date
+import java.sql.PreparedStatement
 
 class GastoVariavel(
     private var id: Int,
@@ -10,7 +10,14 @@ class GastoVariavel(
     private var descricao: String,
     private var data: Date,
     private var metasId: Int
-): DatabaseObject {
+) : DatabaseObject() {
+    override val name: String
+        get() = "Gasto Variável"
+    override val sqlTable: String
+        get() = "gastos_variaveis"
+    override val sqlColumns: String
+        get() = "(id, valor, categoria, descricao, data, metas_id)"
+
     fun getId(): Int {return id}
     fun getValor(): Double {return valor}
     fun getCategoria(): String {return categoria}
@@ -18,23 +25,12 @@ class GastoVariavel(
     fun getData(): Date {return data}
     fun getMetasId(): Int {return metasId}
 
-    override fun insertIntoDatabase(connection: Connection){
-        val insertGastoVariavelSql = "INSERT INTO gastos_variaveis" +
-                "(id, valor, categoria, descricao, data, metas_id)" +
-                "VALUES (?, ?, ?, ?, ?, ?)"
-        val queryInsertGastoVariavel = connection.prepareStatement(insertGastoVariavelSql)
-        queryInsertGastoVariavel.setInt(1, this.getId())
-        queryInsertGastoVariavel.setDouble(2, this.getValor())
-        queryInsertGastoVariavel.setString(3, this.getCategoria())
-        queryInsertGastoVariavel.setString(4, this.getDescricao())
-        queryInsertGastoVariavel.setDate(5, this.getData())
-        queryInsertGastoVariavel.setInt(6, this.getMetasId())
-        queryInsertGastoVariavel.execute()
-
-        println("Gasto Variável successfully inserted.")
-    }
-
-    override fun deleteFromDatabase(connection: Connection, whereCondition: String) {
-        TODO("Not yet implemented")
+    override fun setQueryVariables(query: PreparedStatement) {
+        query.setInt(1, this.getId())
+        query.setDouble(2, this.getValor())
+        query.setString(3, this.getCategoria())
+        query.setString(4, this.getDescricao())
+        query.setDate(5, this.getData())
+        query.setInt(6, this.getMetasId())
     }
 }
