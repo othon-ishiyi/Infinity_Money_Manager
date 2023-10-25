@@ -20,7 +20,6 @@ USE `infinity` ;
 CREATE TABLE IF NOT EXISTS `infinity`.`ganhos_fixos` (
   `id` INT NOT NULL,
   `periodicidade` VARCHAR(50) NOT NULL,
-  `tipo` VARCHAR(50) NOT NULL,
   `valor` DECIMAL(19,2) NOT NULL,
   `fonte` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
@@ -36,7 +35,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `infinity`.`ganhos_variaveis` (
   `id` INT NOT NULL,
-  `tipo` VARCHAR(50) NOT NULL,
   `valor` DECIMAL(19,2) NOT NULL,
   `fonte` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
@@ -68,7 +66,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `infinity`.`gastos_fixos` (
   `id` INT NOT NULL,
   `periodicidade` VARCHAR(50) NOT NULL,
-  `tipo` VARCHAR(50) NOT NULL,
   `valor` DECIMAL(19,2) NOT NULL,
   `categoria` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
@@ -88,7 +85,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `infinity`.`gastos_variaveis` (
   `id` INT NOT NULL,
-  `tipo` VARCHAR(50) NOT NULL,
   `valor` DECIMAL(19,2) NOT NULL,
   `categoria` VARCHAR(50) NOT NULL,
   `descricao` LONGTEXT NULL DEFAULT NULL,
