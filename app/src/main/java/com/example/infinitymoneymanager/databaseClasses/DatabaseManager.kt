@@ -5,20 +5,15 @@ import java.sql.DriverManager
 
 class DatabaseManager{
     companion object {
-        @Volatile
-        private var connection: Connection? = null
-
         @JvmStatic
-        fun getConnection(): Connection {
-            if(connection == null) {
-                connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/infinity",
-                    "root",
-                    "infinity"
-                )
-            }
-            println("Connection made with success.")
-            return connection!!
+        fun createConnection(): Connection {
+            val connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost/infinity",
+                "root",
+                "infinity"
+            )
+            println("Connection with database created with success.")
+            return connection
         }
     }
 }
