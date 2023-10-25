@@ -1,5 +1,6 @@
 package com.example.infinitymoneymanager.databaseClasses
 
+import java.sql.Connection
 import java.sql.Date
 
 class GastoVariavel(
@@ -16,4 +17,21 @@ class GastoVariavel(
     fun getDescricao(): String {return descricao}
     fun getData(): Date {return data}
     fun getMetasId(): Int {return metasId}
+
+    fun insertIntoDatabase(connection: Connection){
+        val insertGastoVariavelSql = "INSERT INTO gastos_variaveis" +
+                "(id, valor, categoria, descricao, data, metas_id)" +
+                "VALUES (?, ?, ?, ?, ?, ?)"
+        val queryInsertGastoVariavel = connection.prepareStatement(insertGastoVariavelSql)
+        queryInsertGastoVariavel.setInt(1, this.getId())
+        queryInsertGastoVariavel.setDouble(2, this.getValor())
+        queryInsertGastoVariavel.setString(3, this.getCategoria())
+        queryInsertGastoVariavel.setString(4, this.getDescricao())
+        queryInsertGastoVariavel.setDate(5, this.getData())
+        queryInsertGastoVariavel.setInt(6, this.getMetasId())
+        queryInsertGastoVariavel.execute()
+
+        println("Gasto Variável successfully inserted.")
+    }
+
 }
