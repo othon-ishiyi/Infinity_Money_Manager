@@ -3,11 +3,11 @@ package com.example.infinitymoneymanager.databaseClasses
 import java.sql.Date
 
 fun main(){
-    val test = DatabaseTests()
-    test.selectTest()
+    val test = DatabaseExamples()
+    test.selectExample()
 }
-class DatabaseTests {
-    fun insertTest(){
+class DatabaseExamples {
+    fun insertExample(){
         val connection = DatabaseManager.createConnection()
 
         val meta = Meta(
@@ -21,7 +21,7 @@ class DatabaseTests {
         connection.close()
     }
 
-    fun deleteTest(){
+    fun deleteExample(){
         val connection = DatabaseManager.createConnection()
 
         DatabaseManager.delete(Meta(), "id < 10 AND id > 5", connection)
@@ -29,7 +29,7 @@ class DatabaseTests {
         connection.close()
     }
 
-    fun selectTest(){
+    fun selectExample(){
         val connection = DatabaseManager.createConnection()
 
         val result1 = DatabaseManager.select(Meta(), "id > 0", connection)
