@@ -17,7 +17,7 @@ class GastoFixo(
     override val sqlTable: String
         get() = "gastos_fixos"
     override val sqlColumns: String
-        get() = "(id, periodicidade, valor, categoria, descricao, data, metas_id)"
+        get() = "id, periodicidade, valor, categoria, descricao, data, metas_id"
 
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}

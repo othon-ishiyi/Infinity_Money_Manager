@@ -16,7 +16,7 @@ class GanhoFixo(
     override val sqlTable: String
         get() = "ganhos_fixos"
     override val sqlColumns: String
-        get() = "(id, periodicidade, valor, fonte, descricao, data)"
+        get() = "id, periodicidade, valor, fonte, descricao, data"
 
     fun getId(): Int {return id}
     fun getPeriodicidade(): String {return periodicidade}

@@ -15,7 +15,7 @@ class GanhoVariavel(
     override val sqlTable: String
         get() = "ganhos_variaveis"
     override val sqlColumns: String
-        get() = "(id, valor, fonte, descricao, data)"
+        get() = "id, valor, fonte, descricao, data"
 
     fun getId(): Int {return id}
     fun getValor(): Double {return valor}

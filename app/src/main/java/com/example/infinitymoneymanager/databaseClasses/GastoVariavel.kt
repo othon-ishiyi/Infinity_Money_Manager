@@ -16,7 +16,7 @@ class GastoVariavel(
     override val sqlTable: String
         get() = "gastos_variaveis"
     override val sqlColumns: String
-        get() = "(id, valor, categoria, descricao, data, metas_id)"
+        get() = "id, valor, categoria, descricao, data, metas_id"
 
     fun getId(): Int {return id}
     fun getValor(): Double {return valor}

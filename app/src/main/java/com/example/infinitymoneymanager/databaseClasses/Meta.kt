@@ -15,7 +15,7 @@ class Meta(
     override val sqlTable: String
         get() = "metas"
     override val sqlColumns: String
-        get() = "(id, nome, valor_alvo, valor_arrecadado, prazo)"
+        get() = "id, nome, valor_alvo, valor_arrecadado, prazo"
 
     fun getId(): Int {return id}
     fun getNome(): String {return nome}
