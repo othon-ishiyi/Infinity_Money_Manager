@@ -22,9 +22,9 @@ class DatabaseManager{
             val sqlColumns = databaseObject.getSqlColumnsNames()
             val sqlTable = databaseObject.getSqlTableName()
             val numberOfColumns = sqlColumns.split(",").size
-            val sqlInterrogations = "?,".repeat(numberOfColumns - 1) + "?"
+            val sqlQuestionMarks = "?,".repeat(numberOfColumns - 1) + "?"
 
-            val statement = "INSERT INTO $sqlTable ($sqlColumns) VALUES ($sqlInterrogations)"
+            val statement = "INSERT INTO $sqlTable ($sqlColumns) VALUES ($sqlQuestionMarks)"
             val query = connection.prepareStatement(statement)
             databaseObject.setQueryVariables(query)
             query.execute()
@@ -34,8 +34,8 @@ class DatabaseManager{
         fun delete(databaseObject: DatabaseObject, whereCondition: String, connection: Connection){
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
+            val statement = "DELETE FROM $sqlTable $whereCondition"
 
-            val statement = "DELETE FROM $sqlTable WHERE $whereCondition"
             val query = connection.prepareStatement(statement)
             query.execute()
             println("$name successfully deleted.")
@@ -47,7 +47,7 @@ class DatabaseManager{
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
 
-            val statement = "SELECT * FROM $sqlTable WHERE $whereCondition"
+            val statement = "SELECT * FROM $sqlTable $whereCondition"
             val query = connection.prepareStatement(statement)
             query.execute()
             println("Selection successfully done in $name")
