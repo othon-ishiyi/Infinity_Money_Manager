@@ -44,10 +44,10 @@ class DatabaseManager{
 
         @JvmStatic
         fun select(databaseObject: DatabaseObject, connection: Connection, columns: String = "*",
-                   whereCondition: String = "", distinct: Boolean = false): MutableList<MutableMap<String, Any>>{
+                   whereCondition: String = "", distinctStatement: Boolean = false): MutableList<MutableMap<String, Any>>{
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
-            val distinctStr = if(distinct) "DISTINCT" else ""
+            val distinctStr = if(distinctStatement) "DISTINCT" else ""
             val statement = "SELECT $distinctStr $columns FROM $sqlTable $whereCondition"
             val query = connection.prepareStatement(statement)
             query.execute()

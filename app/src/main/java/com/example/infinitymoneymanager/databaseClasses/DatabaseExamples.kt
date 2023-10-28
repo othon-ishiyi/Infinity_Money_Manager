@@ -36,7 +36,7 @@ class DatabaseExamples {
 
         val result2 = DatabaseManager.select(GanhoVariavel(), connection)
 
-        val result3 = DatabaseManager.select(GastoFixo(), connection, columns = "valor", distinct = true)
+        val result3 = DatabaseManager.select(GastoFixo(), connection, columns = "valor", distinctStatement = true)
 
         println(result3)
     }
