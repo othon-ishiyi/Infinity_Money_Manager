@@ -24,7 +24,7 @@ class DatabaseExamples {
     fun deleteExample(){
         val connection = DatabaseManager.createConnection()
 
-        DatabaseManager.delete(Meta(), "WHERE id > 15 AND id < 0", connection)
+        DatabaseManager.delete(Meta(), connection, "WHERE id > 15 AND id < 0")
 
         connection.close()
     }
@@ -32,11 +32,11 @@ class DatabaseExamples {
     fun selectExample(){
         val connection = DatabaseManager.createConnection()
 
-        val result1 = DatabaseManager.select(Meta(), "WHERE id > 0", connection)
+        val result1 = DatabaseManager.select(Meta(), connection)
 
-        val result2 = DatabaseManager.select(GanhoVariavel(), "WHERE fonte = 'Trabalho'", connection)
+        val result2 = DatabaseManager.select(GanhoVariavel(), connection)
 
-        val result3 = DatabaseManager.select(GastoFixo(), "", connection)
+        val result3 = DatabaseManager.select(GastoFixo(), connection, columns = "valor", distinct = true)
 
         println(result3)
     }

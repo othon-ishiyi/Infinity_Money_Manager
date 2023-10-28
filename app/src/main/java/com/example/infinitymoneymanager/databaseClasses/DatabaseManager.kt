@@ -2,6 +2,7 @@ package com.example.infinitymoneymanager.databaseClasses
 
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 class DatabaseManager{
@@ -31,7 +32,7 @@ class DatabaseManager{
             println("$name successfully inserted.")
         }
         @JvmStatic
-        fun delete(databaseObject: DatabaseObject, whereCondition: String, connection: Connection){
+        fun delete(databaseObject: DatabaseObject, connection: Connection, whereCondition: String){
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
             val statement = "DELETE FROM $sqlTable $whereCondition"
@@ -42,16 +43,21 @@ class DatabaseManager{
         }
 
         @JvmStatic
-        fun select(databaseObject: DatabaseObject, whereCondition: String,
-                   connection: Connection): MutableList<MutableMap<String, Any>>{
+        fun select(databaseObject: DatabaseObject, connection: Connection, columns: String = "*",
+                   whereCondition: String = "", distinct: Boolean = false): MutableList<MutableMap<String, Any>>{
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
-
-            val statement = "SELECT * FROM $sqlTable $whereCondition"
+            val distinctStr = if(distinct) "DISTINCT" else ""
+            val statement = "SELECT $distinctStr $columns FROM $sqlTable $whereCondition"
             val query = connection.prepareStatement(statement)
             query.execute()
             println("Selection successfully done in $name")
 
+            return getSelectResult(query)
+        }
+
+        @JvmStatic
+        fun getSelectResult(query: PreparedStatement): MutableList<MutableMap<String, Any>>{
             fun getColumnValue(rs: ResultSet, columnIndex: Int, columnType: Int): Any {
                 return when (columnType) {
                     java.sql.Types.INTEGER, java.sql.Types.SMALLINT, java.sql.Types.TINYINT -> rs.getInt(columnIndex)
@@ -76,7 +82,6 @@ class DatabaseManager{
                 }
                 selectResult.add(mutableMap)
             }
-
             return selectResult
         }
     }
