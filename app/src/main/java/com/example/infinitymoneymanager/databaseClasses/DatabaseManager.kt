@@ -53,11 +53,11 @@ class DatabaseManager{
             query.execute()
             println("Selection successfully done in $name")
 
-            return getSelectResult(query)
+            return queryToSelectResult(query)
         }
 
         @JvmStatic
-        fun getSelectResult(query: PreparedStatement): MutableList<MutableMap<String, Any>>{
+        fun queryToSelectResult(query: PreparedStatement): MutableList<MutableMap<String, Any>>{
             fun getColumnValue(rs: ResultSet, columnIndex: Int, columnType: Int): Any {
                 return when (columnType) {
                     java.sql.Types.INTEGER, java.sql.Types.SMALLINT, java.sql.Types.TINYINT -> rs.getInt(columnIndex)
