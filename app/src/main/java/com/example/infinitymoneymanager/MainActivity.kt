@@ -2,6 +2,7 @@ package com.example.infinitymoneymanager
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.infinitymoneymanager.databinding.ActivityMainBinding
 
@@ -23,6 +24,10 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.title = "Toolbar"
+        setSupportActionBar(toolbar)
     }
 
     private fun replaceFragment(fragment: Fragment) {
