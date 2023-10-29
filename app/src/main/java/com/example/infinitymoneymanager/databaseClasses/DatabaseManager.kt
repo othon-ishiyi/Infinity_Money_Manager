@@ -32,11 +32,13 @@ class DatabaseManager{
             println("$name successfully inserted.")
         }
         @JvmStatic
-        fun delete(databaseObject: DatabaseObject, connection: Connection, whereCondition: String){
+        fun delete(databaseObject: DatabaseObject, connection: Connection, whereCondition: String = ""){
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
-            val statement = "DELETE FROM $sqlTable $whereCondition"
-
+            var statement = "DELETE FROM $sqlTable"
+            if(whereCondition != ""){
+                statement += " WHERE $whereCondition"
+            }
             val query = connection.prepareStatement(statement)
             query.execute()
             println("$name successfully deleted.")
@@ -48,7 +50,10 @@ class DatabaseManager{
             val name = databaseObject.getObjectName()
             val sqlTable = databaseObject.getSqlTableName()
             val distinctStr = if(distinctStatement) "DISTINCT" else ""
-            val statement = "SELECT $distinctStr $columns FROM $sqlTable $whereCondition"
+            var statement = "SELECT $distinctStr $columns FROM $sqlTable"
+            if(whereCondition != ""){
+                statement += " WHERE $whereCondition"
+            }
             val query = connection.prepareStatement(statement)
             query.execute()
             println("Selection successfully done in $name")
