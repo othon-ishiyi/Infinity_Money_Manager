@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Infinity Money Manager</string>
+    <string name="evolution">Evolution</string>
+    <string name="composition">Composition</string>
+    <string name="goal">Goal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="composition_fragment">Composition Fragment</string>
+    <string name="evolution_fragment">Evolution Fragment</string>
+    <string name="goal_fragment">Goal Fragment</string>
 </resources>

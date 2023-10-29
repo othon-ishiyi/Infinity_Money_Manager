@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/composition"
+        android:icon="@drawable/baseline_pie_chart_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/composition" />
+    <item
+        android:id="@+id/evolution"
+        android:icon="@drawable/baseline_bar_chart_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/evolution" />
+    <item
+        android:id="@+id/goal"
+        android:icon="@drawable/baseline_flag_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/goal" />
+</menu>
