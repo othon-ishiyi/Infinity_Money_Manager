@@ -22,7 +22,7 @@ class DatabaseExamples {
     }
 
     fun deleteExample(){
-       DatabaseManager.openConnection()
+        DatabaseManager.openConnection()
 
         DatabaseManager.delete(Meta(), "id > 5 AND id < 12")
 
