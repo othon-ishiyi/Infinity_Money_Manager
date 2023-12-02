@@ -1,39 +1,31 @@
 package com.example.infinitymoneymanager
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.example.infinitymoneymanager.databinding.ActivityMainBinding
+import com.example.infinitymoneymanager.ui.theme.InfinityMoneyManagerTheme
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        replaceFragment(CompositionFragment())
-
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.composition -> replaceFragment(CompositionFragment())
-                R.id.evolution -> replaceFragment(EvolutionFragment())
-                R.id.goal -> replaceFragment(GoalFragment())
-                else -> {}
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContent {
+            InfinityMoneyManagerTheme {
+                InfinityApp()
             }
-            true
         }
-
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.title = "Toolbar"
-        setSupportActionBar(toolbar)
     }
+}
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frameLayout, fragment)
-        fragmentTransaction.commit()
-    }
+@Preview(showBackground = true)
+@Composable
+fun InfinityPreview(){
+    InfinityApp()
 }
