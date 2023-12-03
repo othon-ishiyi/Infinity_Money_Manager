@@ -96,7 +96,7 @@ fun CompositionScreen(
             )
             Spacer(modifier = Modifier.weight(1.0f))
             OutlinedButton(
-                onClick = { /*TODO: Abrir janela de filtros*/ },
+                onClick = { navController.navigate("filter_screen") },
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .align(Alignment.CenterVertically)
