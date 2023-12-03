@@ -57,74 +57,65 @@ fun CompositionScreen(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        topBar = {
-            Column() {
-                Row(
+    Column() {
+        Row(
 
-                ) {
-                    TextButton(
-                        onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.spendings)
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1.0f))
-                    TextButton(
-                        onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.revenues)
-                        )
-                    }
-                }
-                Row(
-
-                ){
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {/*TODO: Alterar estado correspondente a value*/},
-                        label = {Text("Pesquisar")},
-                        leadingIcon = {Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Search"
-                        )},
-                        modifier = Modifier
-                            .padding(dimensionResource(id = R.dimen.padding_small))
-                            .width(200.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1.0f))
-                    OutlinedButton(
-                        onClick = { /*TODO: Abrir janela de filtros*/ },
-                        modifier = Modifier
-                            .padding(dimensionResource(id = R.dimen.padding_small))
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.FilterAlt,
-                            contentDescription = "Search"
-                        )
-                        Text(
-                            text = "Filtro"
-                        )
-                    }
-                }
-                Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
-            }
-        },
-        floatingActionButton = {AddTransactionButton(navController)}
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxHeight()
         ) {
-            AllTransactions(
-                transactions = transactions,
-                modifier = Modifier
-            )
+            TextButton(
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.spendings)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.revenues)
+                )
+            }
         }
+        Row(
+
+        ) {
+            OutlinedTextField(
+                value = "",
+                onValueChange = {/*TODO: Alterar estado correspondente a value*/ },
+                label = { Text("Pesquisar") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search"
+                    )
+                },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .width(200.dp)
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            OutlinedButton(
+                onClick = { /*TODO: Abrir janela de filtros*/ },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.FilterAlt,
+                    contentDescription = "Search"
+                )
+                Text(
+                    text = "Filtro"
+                )
+            }
+        }
+        Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+
+        AllTransactions(
+            transactions = transactions,
+            modifier = Modifier
+        )
     }
 }
 
@@ -252,18 +243,7 @@ fun TransactionInfoCard(
 }
 
 //Plus button in the bottom right corner
-@Composable
-fun AddTransactionButton(navController: NavController,) {
-    FloatingActionButton(
-        onClick = {navController.navigate("add_transaction_screen")},
-        containerColor = MaterialTheme.colorScheme.tertiary
-    ) {
-        Icon(Icons.Filled.Add,
-            contentDescription = "Floating action button.",
-            tint = MaterialTheme.colorScheme.onTertiary
-        )
-    }
-}
+
 
 
 @Preview(showBackground = true)

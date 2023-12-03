@@ -7,10 +7,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +42,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
 import com.example.infinitymoneymanager.ui.transactions
@@ -49,30 +52,6 @@ sealed class BottomNavItem(var title:String, var icon:ImageVector, var screen_ro
     object Composition : BottomNavItem("Composition", Icons.Filled.PieChart,"composition")
     object Evolution: BottomNavItem("Evolution", Icons.Filled.TrendingUp,"evolution")
     object Goal: BottomNavItem("Goal", Icons.Filled.Flag,"goal")
-}
-@Composable
-fun InfinityApp(
-    navController: NavHostController = rememberNavController()
-) {
-    val bottomNavigationController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = "finance_screen",
-        modifier = Modifier
-    ) {
-        composable("finance_screen"){
-            FinanceScreen(
-                navController = navController,
-                bottomNavigationController = bottomNavigationController
-            )
-        }
-        composable("add_transaction_screen"){
-            AddTransactionScreen(
-                navController = navController
-            )
-        }
-    }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,18 +69,43 @@ fun InfinityAppBar(
     )
 }
 
-// Main app
 @Composable
-fun FinanceScreen(
-    navController: NavHostController,
-    bottomNavigationController: NavHostController,
+fun AddTransactionButton(navController: NavController) {
+    FloatingActionButton(
+        onClick = {navController.navigate("add_transaction_screen")},
+        containerColor = MaterialTheme.colorScheme.tertiary
+    ) {
+        Icon(Icons.Filled.Add,
+            contentDescription = "Floating action button.",
+            tint = MaterialTheme.colorScheme.onTertiary
+        )
+    }
+}
+
+// Main app
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InfinityApp(
+    navController: NavHostController = rememberNavController(),
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold (
         topBar = { InfinityAppBar() },
-        bottomBar = {BottomNavigation(navController = bottomNavigationController)}
+        bottomBar = if (currentRoute != "add_transaction_screen") {
+            {BottomNavigation(navController = navController)}
+        } else {
+            {}
+        },
+        floatingActionButton = if (currentRoute == "composition") {
+            {AddTransactionButton(navController = navController)}
+        } else {
+            {}
+        }
     ) { innerPadding ->
         NavHost(
-            navController = bottomNavigationController,
+            navController = navController,
             startDestination = BottomNavItem.Composition.screen_route,
             modifier = Modifier.padding(innerPadding)
         ) {
@@ -116,6 +120,9 @@ fun FinanceScreen(
             }
             composable(BottomNavItem.Goal.screen_route) {
                 GoalScreen()
+            }
+            composable("add_transaction_screen") {
+                AddTransactionScreen(navController = navController)
             }
         }
     }
@@ -169,4 +176,10 @@ fun BottomNavigation(navController: NavController) {
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InfinityPreview(){
+    InfinityApp()
 }
