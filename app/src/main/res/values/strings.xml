@@ -7,4 +7,6 @@
     <string name="composition_fragment">Composition Fragment</string>
     <string name="evolution_fragment">Evolution Fragment</string>
     <string name="goal_fragment">Goal Fragment</string>
+    <string name="spendings">Despesas</string>
+    <string name="revenues">Receitas</string>
 </resources>

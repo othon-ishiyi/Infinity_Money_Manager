@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.infinitymoneymanager.ui.transactions
 
 //Defining the screens for navigation
 sealed class BottomNavItem(var title:String, var icon:ImageVector, var screen_route:String){
@@ -78,7 +79,7 @@ fun InfinityApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Composition.screen_route) {
-                CompositionScreen()
+                CompositionScreen(transactions)
             }
             composable(BottomNavItem.Evolution.screen_route) {
                 EvolutionScreen()

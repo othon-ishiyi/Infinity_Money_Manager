@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.HealthAndSafety
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -36,15 +39,78 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.infinitymoneymanager.R
 import androidx.compose.material3.Divider
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.res.stringResource
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompositionScreen() {
+fun CompositionScreen(
+    transactions: List<Transaction>,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        Row(
 
+        ) {
+            TextButton(
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.spendings)
+                )
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.revenues)
+                )
+            }
+        }
+        Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+        Row(
+
+        ){
+            OutlinedTextField(
+                value = "",
+                onValueChange = {/*TODO: Alterar estado correspondente a value*/},
+                label = {Text("Pesquisar")},
+                leadingIcon = {Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search"
+                )},
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .width(200.dp)
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            OutlinedButton(
+                onClick = { /*TODO: Abrir janela de filtros*/ },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.FilterAlt,
+                    contentDescription = "Search"
+                )
+                Text(
+                    text = "Filtro"
+                )
+            }
+        }
+        AllTransactions(
+            transactions = transactions,
+            modifier = Modifier
+        )
     }
 }
 
@@ -53,6 +119,7 @@ fun AllTransactions(
     transactions: List<Transaction>,
     modifier: Modifier = Modifier
 ) {
+    // Returns a column of DayTransactions object
     val groupedTransactions = transactions.groupBy { it.date }
 
     LazyColumn(modifier = modifier) {
@@ -75,6 +142,7 @@ fun DayTransactions(
     transactions: List<Transaction>,
     modifier: Modifier = Modifier
 ) {
+    // Returns a column of TransactionInfoCard objects
     val totalValue = transactions.sumOf { it.value }
     Column(
         modifier = modifier
@@ -93,7 +161,7 @@ fun DayTransactions(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
             )
         }
-        Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+        Divider(color = MaterialTheme.colorScheme.tertiaryContainer, thickness = 1.dp)
 
         Column {
             transactions.forEach { transaction ->
@@ -124,8 +192,9 @@ fun TransactionInfoCard(
     transaction: Transaction,
     modifier: Modifier = Modifier
 ) {
+    // Returns a button with the informations about the transaction
     Card(
-        onClick = {/*TODO*/},
+        onClick = {/*TODO: deve abrir uma janela para editar o gasto/ganho*/},
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
         ),
@@ -155,7 +224,7 @@ fun TransactionInfoCard(
                 Text(
                     text = transaction.description,
                     fontSize = 8.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
             Spacer(modifier = Modifier.weight(1.0f))
@@ -228,7 +297,7 @@ fun AllTransactionsPreview() {
             periodicity = "Único",
         )
     )
-    AllTransactions(
+    CompositionScreen(
         transactions = transactions
     )
 }
