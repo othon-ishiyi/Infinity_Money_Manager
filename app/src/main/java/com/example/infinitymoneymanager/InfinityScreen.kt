@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.infinitymoneymanager.ui.AddTransactionScreen
 import com.example.infinitymoneymanager.ui.transactions
 
 //Defining the screens for navigation
@@ -49,7 +50,32 @@ sealed class BottomNavItem(var title:String, var icon:ImageVector, var screen_ro
     object Evolution: BottomNavItem("Evolution", Icons.Filled.TrendingUp,"evolution")
     object Goal: BottomNavItem("Goal", Icons.Filled.Flag,"goal")
 }
+@Composable
+fun InfinityApp(
+    navController: NavHostController = rememberNavController()
+) {
+    val bottomNavigationController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "finance_screen",
+        modifier = Modifier
+    ) {
+        composable("finance_screen"){
+            FinanceScreen(
+                navController = navController,
+                bottomNavigationController = bottomNavigationController
+            )
+        }
+        composable("add_transaction_screen"){
+            AddTransactionScreen(
+                navController = navController
+            )
+        }
+    }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfinityAppBar(
     modifier: Modifier = Modifier
@@ -66,20 +92,24 @@ fun InfinityAppBar(
 
 // Main app
 @Composable
-fun InfinityApp(
-    navController: NavHostController = rememberNavController(),
+fun FinanceScreen(
+    navController: NavHostController,
+    bottomNavigationController: NavHostController,
 ) {
     Scaffold (
         topBar = { InfinityAppBar() },
-        bottomBar = {BottomNavigation(navController = navController)}
+        bottomBar = {BottomNavigation(navController = bottomNavigationController)}
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController = bottomNavigationController,
             startDestination = BottomNavItem.Composition.screen_route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Composition.screen_route) {
-                CompositionScreen(transactions)
+                CompositionScreen(
+                    transactions = transactions,
+                    navController = navController
+                )
             }
             composable(BottomNavItem.Evolution.screen_route) {
                 EvolutionScreen()
