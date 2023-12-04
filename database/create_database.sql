@@ -73,9 +73,11 @@ CREATE TABLE IF NOT EXISTS `infinity`.`gastos_fixos` (
   `metas_id` INT NULL DEFAULT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_metas_id`
+  CONSTRAINT `fk_fix_metas_id`
     FOREIGN KEY (`metas_id`)
-    REFERENCES `infinity`.`metas` (`id`))
+    REFERENCES `infinity`.`metas` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -92,9 +94,11 @@ CREATE TABLE IF NOT EXISTS `infinity`.`gastos_variaveis` (
   `metas_id` INT NULL DEFAULT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_metas_id`
+  CONSTRAINT `fk_var_metas_id`
     FOREIGN KEY (`metas_id`)
-    REFERENCES `infinity`.`metas` (`id`))
+    REFERENCES `infinity`.`metas` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
