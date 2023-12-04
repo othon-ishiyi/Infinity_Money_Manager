@@ -8,7 +8,7 @@ fun main(){
 }
 class DatabaseExamples {
     fun insertExample(){
-        val connection = DatabaseManager.createConnection()
+        DatabaseManager.openConnection()
 
         val meta = Meta(
             20,
@@ -16,28 +16,27 @@ class DatabaseExamples {
             1.00,
             Date(11000)
         )
-        DatabaseManager.insert(meta, connection)
+        DatabaseManager.insert(meta)
 
-        connection.close()
+        DatabaseManager.closeConnection()
     }
 
     fun deleteExample(){
-        val connection = DatabaseManager.createConnection()
+        DatabaseManager.openConnection()
 
-        DatabaseManager.delete(Meta(), connection, "WHERE id > 15 AND id < 0")
+        DatabaseManager.delete(Meta(), "id > 5 AND id < 12")
 
-        connection.close()
+        DatabaseManager.closeConnection()
     }
 
     fun selectExample(){
-        val connection = DatabaseManager.createConnection()
+        DatabaseManager.openConnection()
 
-        val result1 = DatabaseManager.select(Meta(), connection)
+        val result = DatabaseManager.select(GastoFixo(), columns = "id, valor",
+            whereCondition = "id > 4 AND id < 10", distinctStatement = true)
 
-        val result2 = DatabaseManager.select(GanhoVariavel(), connection)
+        println(result)
 
-        val result3 = DatabaseManager.select(GastoFixo(), connection, columns = "valor", distinctStatement = true)
-
-        println(result3)
+        DatabaseManager.closeConnection()
     }
 }
