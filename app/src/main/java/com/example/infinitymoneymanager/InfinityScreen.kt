@@ -46,7 +46,10 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
+import com.example.infinitymoneymanager.ui.EditGoalScreen
 import com.example.infinitymoneymanager.ui.FilterScreen
 import com.example.infinitymoneymanager.ui.NewGoalScreen
 import com.example.infinitymoneymanager.ui.SettingsScreen
@@ -117,7 +120,9 @@ fun InfinityApp(
         bottomBar = if (currentRoute != "add_transaction_screen" &&
             currentRoute != "settings_screen"   &&
             currentRoute != "filter_screen"     &&
-            currentRoute != "new_goal_screen") {
+            currentRoute != "new_goal_screen"   &&
+            (currentRoute?.contains("edit_goal_screen") == null || !currentRoute.contains("edit_goal_screen"))
+        ) {
             {BottomNavigation(navController = navController)}
         } else {
             {}
@@ -168,6 +173,13 @@ fun InfinityNavHost(
         }
         composable("new_goal_screen") {
             NewGoalScreen()
+        }
+        composable(
+            route = "edit_goal_screen/{goalId}",
+            arguments = listOf(navArgument("goalId") { type = NavType.IntType })
+        ) { entry ->
+            val goalId = entry.arguments?.getInt("goalId") ?: -1
+            EditGoalScreen(id = goalId)
         }
     }
 }

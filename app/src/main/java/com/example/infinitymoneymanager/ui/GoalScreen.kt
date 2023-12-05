@@ -30,25 +30,29 @@ val goals = listOf(
         nome = "Carro novo",
         valorAlvo = 75000.0,
         valorArrecadado = 33750.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(800).toString())
+        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(800).toString()),
+        id = 0
     ),
     Meta(
         nome = "Troca de celular",
         valorAlvo = 4199.0,
         valorArrecadado = 3359.2,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(120).toString())
+        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(120).toString()),
+        id = 1
     ),
     Meta(
         nome = "Entrada do apartamento",
         valorAlvo = 150000.0,
         valorArrecadado = 12000.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(1500).toString())
+        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(1500).toString()),
+        id = 2
     ),
     Meta(
         nome = "Viagem de final de ano",
         valorAlvo = 16000.0,
         valorArrecadado = 3420.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(15).toString()) // 30 days from now
+        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(15).toString()),
+        id = 3
     )
 )
 fun formatCurrency(value: Double): String {
@@ -110,13 +114,14 @@ fun GoalScreen(navController: NavController) {
         }
 
 
-        AllGoals(goals = goals)
+        AllGoals(goals = goals, navController = navController)
     }
 }
 
 @Composable
 fun GoalCard(
     goal: Meta,
+    navController: NavController,
     modifier: Modifier = Modifier.padding(vertical = 12.dp)
 ) {
     Card(
@@ -141,7 +146,9 @@ fun GoalCard(
             Icon(
                 imageVector = Icons.Filled.Edit,
                 contentDescription = "",
-                modifier = Modifier.size(15.dp),
+                modifier = Modifier
+                    .size(15.dp)
+                    .clickable { navController.navigate("edit_goal_screen/${goal.getId()}") },
                 tint = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
@@ -222,17 +229,17 @@ fun GoalCard(
 
     }
 }
-
 @Composable
 fun AllGoals(
     goals: List<Meta>,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
 
     LazyColumn(modifier = modifier) {
         goals.forEach {
             item{
-                GoalCard(goal = it)
+                GoalCard(goal = it, navController = navController)
             }
         }
     }
@@ -291,7 +298,8 @@ fun NewGoalButton(
 @Composable
 fun GoalCardPreview() {
     GoalCard(
-        goal = goals[0]
+        goal = goals[0],
+        navController = rememberNavController()
     )
 }
 
