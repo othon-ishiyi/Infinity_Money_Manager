@@ -109,7 +109,7 @@ fun BottomNavigation(navController: NavController) {
         items.forEach { item ->
 
             val iconColor = if (currentRoute == item.screen_route) MaterialTheme.colorScheme.onPrimary
-            else MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onPrimaryContainer
 
             NavigationBarItem(
                 icon = {
@@ -121,7 +121,7 @@ fun BottomNavigation(navController: NavController) {
                 label = {
                     Text(
                         text = item.title,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )},
                 selected = (currentRoute == item.screen_route),
                 onClick = {
