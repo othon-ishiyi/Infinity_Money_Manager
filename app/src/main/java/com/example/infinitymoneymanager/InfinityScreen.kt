@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
 import com.example.infinitymoneymanager.ui.FilterScreen
 import com.example.infinitymoneymanager.ui.SettingsScreen
-import com.example.infinitymoneymanager.ui.transactions
 
 //Defining the screens for bottom navigation
 sealed class BottomNavItem(var title:String, var icon:ImageVector, var screen_route:String){
@@ -145,7 +144,6 @@ fun InfinityNavHost(
     ) {
         composable(BottomNavItem.Composition.screen_route) {
             CompositionScreen(
-                transactions = transactions,
                 navController = navController
             )
         }

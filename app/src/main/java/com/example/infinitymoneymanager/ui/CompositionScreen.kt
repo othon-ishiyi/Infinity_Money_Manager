@@ -45,7 +45,12 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -53,27 +58,34 @@ import androidx.navigation.compose.rememberNavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompositionScreen(
-    transactions: List<Transaction>,
+    compositionViewModel: CompositionViewModel = viewModel(),
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+
+    val compositionUiState by compositionViewModel.uiState.collectAsState()
+
     Column() {
         Row(
 
         ) {
             TextButton(
-                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
+                onClick = {compositionViewModel.switchTransaction(true)},
             ) {
                 Text(
-                    text = stringResource(id = R.string.spendings)
+                    text = stringResource(id = R.string.spendings),
+                    color = if (compositionUiState.isSpending) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.secondary
                 )
             }
             Spacer(modifier = Modifier.weight(1.0f))
             TextButton(
-                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
+                onClick = {compositionViewModel.switchTransaction(false)},
             ) {
                 Text(
-                    text = stringResource(id = R.string.revenues)
+                    text = stringResource(id = R.string.revenues),
+                    color = if (!compositionUiState.isSpending) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.secondary
                 )
             }
         }
@@ -81,8 +93,8 @@ fun CompositionScreen(
 
         ) {
             OutlinedTextField(
-                value = "",
-                onValueChange = {/*TODO: Alterar estado correspondente a value*/ },
+                value = compositionUiState.currentSearch,
+                onValueChange = {compositionViewModel.onSearchChange(value = it)},
                 label = { Text("Pesquisar") },
                 leadingIcon = {
                     Icon(
@@ -113,7 +125,7 @@ fun CompositionScreen(
         Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
 
         AllTransactions(
-            transactions = transactions,
+            transactions = compositionViewModel.transactions,
             modifier = Modifier
         )
     }
@@ -121,9 +133,12 @@ fun CompositionScreen(
 
 @Composable
 fun AllTransactions(
-    transactions: List<Transaction>,
+    transactions: List<Transaction>?,
     modifier: Modifier = Modifier
 ) {
+    if(transactions == null) {
+        return
+    }
     // Returns a column of DayTransactions object
     val groupedTransactions = transactions.groupBy { it.date }
 
@@ -292,7 +307,6 @@ fun AllTransactionsPreview() {
         )
     )
     CompositionScreen(
-        transactions = transactions,
         navController = rememberNavController()
     )
 }
