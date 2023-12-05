@@ -1,6 +1,7 @@
 package com.example.infinitymoneymanager.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -18,8 +19,11 @@ import java.time.temporal.ChronoUnit
 import androidx.compose.material.icons.filled.Edit
 import java.text.NumberFormat
 import java.time.ZoneId
-import android.widget.ProgressBar
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 val goals = listOf(
     Meta(
@@ -75,20 +79,20 @@ fun getRemainingTime(dateSql: java.sql.Date): String {
         period.months == 1 -> "1 mes"
         period.months > 0 -> "${period.months} meses"
         Math.toIntExact(daysDifference) == 1 -> "1 dia"
-        daysDifference > 0 -> "${daysDifference} dias"
+        daysDifference > 0 -> "$daysDifference dias"
         else -> "Hoje"
     }
 }
 @Composable
-fun GoalScreen() {
+fun GoalScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
 
-        Row() {
-            val goalsSize = if (goals.size == 0) "Nenhuma meta"
+        Row {
+            val goalsSize = if (goals.isEmpty()) "Nenhuma meta"
             else if (goals.size == 1) "1 Meta"
             else "${goals.size} Metas"
 
@@ -99,6 +103,8 @@ fun GoalScreen() {
                     .align(Alignment.CenterVertically),
                 color = MaterialTheme.colorScheme.onBackground
             )
+            Spacer(modifier = Modifier.weight(1.0f))
+            NewGoalButton(navController = navController)
 
 
         }
@@ -149,15 +155,15 @@ fun GoalCard(
         )
 
 
-            LinearProgressIndicator(
-                progress = goal.getValorArrecadado().toFloat() / goal.getValorAlvo().toFloat(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Transparent)
-                    .padding(horizontal = 8.dp)
-                    .height(12.dp),
-                color = MaterialTheme.colorScheme.primaryContainer // Set the color to match the background
-            )
+        LinearProgressIndicator(
+            progress = goal.getValorArrecadado().toFloat() / goal.getValorAlvo().toFloat(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent)
+                .padding(horizontal = 8.dp)
+                .height(12.dp),
+            color = MaterialTheme.colorScheme.primaryContainer // Set the color to match the background
+        )
 
 
         Row(
@@ -232,6 +238,55 @@ fun AllGoals(
     }
 }
 
+@Composable
+fun NewGoalButton(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        ),
+        modifier = modifier
+            .width(130.dp)
+            .height(30.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .clickable {
+                    navController.navigate("new_goal_screen") {
+
+                        navController.graph.startDestinationRoute?.let { screenRoute ->
+                            popUpTo(screenRoute) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "Add"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Nova meta",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+
+
+
 @Preview(showBackground = true)
 @Composable
 fun GoalCardPreview() {
@@ -243,6 +298,5 @@ fun GoalCardPreview() {
 @Preview(showBackground = true)
 @Composable
 fun GoalScreenPreview() {
-
-    GoalScreen()
+    GoalScreen(navController = rememberNavController())
 }

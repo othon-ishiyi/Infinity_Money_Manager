@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
 import com.example.infinitymoneymanager.ui.FilterScreen
+import com.example.infinitymoneymanager.ui.NewGoalScreen
 import com.example.infinitymoneymanager.ui.SettingsScreen
 import com.example.infinitymoneymanager.ui.transactions
 
@@ -114,8 +115,9 @@ fun InfinityApp(
         topBar = { InfinityAppBar(navController) },
         /*TODO: melhorar o código hardcodado*/
         bottomBar = if (currentRoute != "add_transaction_screen" &&
-            currentRoute != "settings_screen" &&
-            currentRoute != "filter_screen") {
+            currentRoute != "settings_screen"   &&
+            currentRoute != "filter_screen"     &&
+            currentRoute != "new_goal_screen") {
             {BottomNavigation(navController = navController)}
         } else {
             {}
@@ -153,7 +155,7 @@ fun InfinityNavHost(
             EvolutionScreen()
         }
         composable(BottomNavItem.Goal.screen_route) {
-            GoalScreen()
+            GoalScreen(navController = navController)
         }
         composable("add_transaction_screen") {
             AddTransactionScreen(navController = navController)
@@ -163,6 +165,9 @@ fun InfinityNavHost(
         }
         composable("filter_screen") {
             FilterScreen(navController = navController)
+        }
+        composable("new_goal_screen") {
+            NewGoalScreen()
         }
     }
 }
