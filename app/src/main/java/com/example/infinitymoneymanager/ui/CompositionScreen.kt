@@ -102,6 +102,7 @@ fun CompositionScreen(
                         contentDescription = "Search"
                     )
                 },
+                singleLine = true,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .width(200.dp)
