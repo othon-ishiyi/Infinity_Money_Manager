@@ -46,8 +46,12 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
+import com.example.infinitymoneymanager.ui.EditGoalScreen
 import com.example.infinitymoneymanager.ui.FilterScreen
+import com.example.infinitymoneymanager.ui.NewGoalScreen
 import com.example.infinitymoneymanager.ui.SettingsScreen
 import com.example.infinitymoneymanager.ui.transactions
 
@@ -114,8 +118,11 @@ fun InfinityApp(
         topBar = { InfinityAppBar(navController) },
         /*TODO: melhorar o código hardcodado*/
         bottomBar = if (currentRoute != "add_transaction_screen" &&
-            currentRoute != "settings_screen" &&
-            currentRoute != "filter_screen") {
+            currentRoute != "settings_screen"   &&
+            currentRoute != "filter_screen"     &&
+            currentRoute != "new_goal_screen"   &&
+            (currentRoute?.contains("edit_goal_screen") == null || !currentRoute.contains("edit_goal_screen"))
+        ) {
             {BottomNavigation(navController = navController)}
         } else {
             {}
@@ -153,7 +160,7 @@ fun InfinityNavHost(
             EvolutionScreen()
         }
         composable(BottomNavItem.Goal.screen_route) {
-            GoalScreen()
+            GoalScreen(navController = navController)
         }
         composable("add_transaction_screen") {
             AddTransactionScreen(navController = navController)
@@ -163,6 +170,16 @@ fun InfinityNavHost(
         }
         composable("filter_screen") {
             FilterScreen(navController = navController)
+        }
+        composable("new_goal_screen") {
+            NewGoalScreen()
+        }
+        composable(
+            route = "edit_goal_screen/{goalId}",
+            arguments = listOf(navArgument("goalId") { type = NavType.IntType })
+        ) { entry ->
+            val goalId = entry.arguments?.getInt("goalId") ?: -1
+            EditGoalScreen(id = goalId)
         }
     }
 }
@@ -185,7 +202,7 @@ fun BottomNavigation(navController: NavController) {
         items.forEach { item ->
 
             val iconColor = if (currentRoute == item.screen_route) MaterialTheme.colorScheme.onPrimary
-            else MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onPrimaryContainer
 
             NavigationBarItem(
                 icon = {
@@ -197,7 +214,7 @@ fun BottomNavigation(navController: NavController) {
                 label = {
                     Text(
                         text = item.title,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )},
                 selected = (currentRoute == item.screen_route),
                 onClick = {
