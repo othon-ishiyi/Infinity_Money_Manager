@@ -3,6 +3,7 @@ package com.example.infinitymoneymanager.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Flag
@@ -39,27 +41,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.infinitymoneymanager.R
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompositionScreen(
     transactions: List<Transaction>,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    Column() {
         Row(
 
         ) {
             TextButton(
-                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
             ) {
                 Text(
                     text = stringResource(id = R.string.spendings)
@@ -67,33 +70,33 @@ fun CompositionScreen(
             }
             Spacer(modifier = Modifier.weight(1.0f))
             TextButton(
-                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/},
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                onClick = {/*TODO: alterar o estado correspondente à visual. de Despesas ou Receitas*/ },
             ) {
                 Text(
                     text = stringResource(id = R.string.revenues)
                 )
             }
         }
-        Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
         Row(
 
-        ){
+        ) {
             OutlinedTextField(
                 value = "",
-                onValueChange = {/*TODO: Alterar estado correspondente a value*/},
-                label = {Text("Pesquisar")},
-                leadingIcon = {Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search"
-                )},
+                onValueChange = {/*TODO: Alterar estado correspondente a value*/ },
+                label = { Text("Pesquisar") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search"
+                    )
+                },
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .width(200.dp)
             )
             Spacer(modifier = Modifier.weight(1.0f))
             OutlinedButton(
-                onClick = { /*TODO: Abrir janela de filtros*/ },
+                onClick = { navController.navigate("filter_screen") },
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .align(Alignment.CenterVertically)
@@ -107,6 +110,8 @@ fun CompositionScreen(
                 )
             }
         }
+        Divider(color = MaterialTheme.colorScheme.secondary, thickness = 1.dp)
+
         AllTransactions(
             transactions = transactions,
             modifier = Modifier
@@ -237,21 +242,10 @@ fun TransactionInfoCard(
     }
 }
 
+//Plus button in the bottom right corner
 
-@Preview(showBackground = true)
-@Composable
-fun TransactionButtonPreview() {
-    TransactionInfoCard(
-        transaction = Transaction(
-            id = "1",
-            category = "Alimentação",
-            description = "Churraskilo",
-            value = 22.96,
-            date = "Hoje 02/12/2023",
-            periodicity = "Único"
-        )
-    )
-}
+
+
 @Preview(showBackground = true)
 @Composable
 fun AllTransactionsPreview() {
@@ -298,6 +292,7 @@ fun AllTransactionsPreview() {
         )
     )
     CompositionScreen(
-        transactions = transactions
+        transactions = transactions,
+        navController = rememberNavController()
     )
 }

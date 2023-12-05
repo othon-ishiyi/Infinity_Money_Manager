@@ -19,7 +19,7 @@ val transactions = listOf(
         periodicity = "Único",
     ),
     Transaction(
-        id = "2",
+        id = "3",
         category = "Meta",
         description = "Fusquinha",
         value = 850.00,
@@ -27,7 +27,7 @@ val transactions = listOf(
         periodicity = "Único",
     ),
     Transaction(
-        id = "2",
+        id = "4",
         category = "Educação",
         description = "Ichiban",
         value = 350.00,
@@ -35,11 +35,27 @@ val transactions = listOf(
         periodicity = "Mensal",
     ),
     Transaction(
-        id = "2",
+        id = "5",
         category = "Alimentação",
         description = "Rodoserv",
         value = 20.00,
         date = "30/11/2023",
+        periodicity = "Único",
+    ),
+    Transaction(
+        id = "6",
+        category = "Alimentação",
+        description = "Cantina",
+        value = 7.00,
+        date = "30/11/2023",
+        periodicity = "Único",
+    ),
+    Transaction(
+        id = "7",
+        category = "Alimentação",
+        description = "Moska",
+        value = 22.00,
+        date = "28/11/2023",
         periodicity = "Único",
     )
 )
