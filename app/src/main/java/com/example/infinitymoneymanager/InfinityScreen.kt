@@ -46,9 +46,11 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.infinitymoneymanager.ui.AddTransactionScreen
+import com.example.infinitymoneymanager.ui.CompositionViewModel
 import com.example.infinitymoneymanager.ui.EditGoalScreen
 import com.example.infinitymoneymanager.ui.FilterScreen
 import com.example.infinitymoneymanager.ui.NewGoalScreen
@@ -144,6 +146,7 @@ fun InfinityNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val compositionViewModel: CompositionViewModel = viewModel()
     NavHost(
         navController = navController,
         startDestination = BottomNavItem.Composition.screen_route,
@@ -151,7 +154,8 @@ fun InfinityNavHost(
     ) {
         composable(BottomNavItem.Composition.screen_route) {
             CompositionScreen(
-                navController = navController
+                navController = navController,
+                compositionViewModel = compositionViewModel
             )
         }
         composable(BottomNavItem.Evolution.screen_route) {
@@ -161,7 +165,10 @@ fun InfinityNavHost(
             GoalScreen(navController = navController)
         }
         composable("add_transaction_screen") {
-            AddTransactionScreen(navController = navController)
+            AddTransactionScreen(
+                navController = navController,
+                compositionViewModel = compositionViewModel
+            )
         }
         composable("settings_screen") {
             SettingsScreen(navController = navController)

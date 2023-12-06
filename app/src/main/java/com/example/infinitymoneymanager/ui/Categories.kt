@@ -1,11 +1,13 @@
 package com.example.infinitymoneymanager.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.HealthAndSafety
 import androidx.compose.material.icons.filled.House
+import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Restaurant
@@ -54,6 +56,25 @@ val DefaultSpendingCategories = listOf(
     Category(
         "Casa",
         Icons.Filled.House
+    ),
+    Category(
+        "Outros",
+        Icons.Filled.QuestionMark
+    )
+)
+
+val DefaultRevenuesCategories = listOf(
+    Category(
+        "Salário",
+        Icons.Filled.Payments
+    ),
+    Category(
+        "Investimentos",
+        Icons.Filled.AccountBalance
+    ),
+    Category(
+        "Presente",
+        Icons.Filled.Redeem
     ),
     Category(
         "Outros",

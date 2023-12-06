@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,14 +30,21 @@ import com.example.infinitymoneymanager.R
 fun CategoryButton(
     category: Category,
     onClick: () -> Unit,
-    isSelected: Boolean = false,
+    selectedCategoryName: String,
     modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         onClick = onClick,
+        colors = if(selectedCategoryName == category.name) {
+            ButtonDefaults.outlinedButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
+            )
+        } else {
+            ButtonDefaults.outlinedButtonColors()
+        },
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small))
-            //.height(50.dp)
     ) {
         Column(
             modifier = modifier,
@@ -58,37 +66,22 @@ fun CategoryButton(
 
 @Composable
 fun CategoryGrid(
-    categories: List<Category>,
-    onClick: () -> Unit,
+    categories: List<Category>?,
+    onClick: (Category) -> Unit,
+    selectedCategoryName: String,
     modifier : Modifier = Modifier
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3), // 4 columns
+        columns = GridCells.Fixed(3), // 3 columns
         modifier = Modifier
     ) {
-        items(categories.size) { index ->
+        items(categories!!.size) { index ->
             CategoryButton(
                 category = categories[index],
-                onClick = onClick
+                onClick = {onClick(categories[index])},
+                selectedCategoryName = selectedCategoryName
             )
         }
     }
 }
 
-@Preview
-@Composable
-fun DisplayCategoryGrid() {
-    CategoryGrid(
-        DefaultSpendingCategories,
-        {}
-    )
-}
-
-@Preview
-@Composable
-fun DisplayCategoryButton() {
-    CategoryButton(
-        DefaultSpendingCategories[5],
-        {}
-    )
-}
