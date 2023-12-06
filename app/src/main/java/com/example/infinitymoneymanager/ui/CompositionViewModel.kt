@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.infinitymoneymanager.databaseClasses.revenues
+import com.example.infinitymoneymanager.databaseClasses.spendings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -88,97 +90,13 @@ class CompositionViewModel : ViewModel(){
 
     private fun getTransactions(
         /*TODO: substituir pela função integrada com o back-end*/
+        // Se quiser pode apagar o arquivo transactions.kt que criei só pra fazer testes
     ){
         if(_uiState.value.isSpending) {
-            val transactions = listOf(
-                Transaction(
-                    id = "1",
-                    category = "Alimentação",
-                    description = "Churraskilo",
-                    value = 22.96,
-                    date = "Hoje 02/12/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "2",
-                    category = "Saúde",
-                    description = "Psicólogo",
-                    value = 70.00,
-                    date = "Hoje 02/12/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "3",
-                    category = "Meta",
-                    description = "Fusquinha",
-                    value = 850.00,
-                    date = "Ontem 01/12/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "4",
-                    category = "Educação",
-                    description = "Ichiban",
-                    value = 350.00,
-                    date = "Ontem 01/12/2023",
-                    periodicity = "Mensal",
-                ),
-                Transaction(
-                    id = "5",
-                    category = "Exercício",
-                    description = "Whey Protein",
-                    value = 80.00,
-                    date = "30/11/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "6",
-                    category = "Casa",
-                    description = "Conserto do Chuveiro",
-                    value = 20.00,
-                    date = "30/11/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "7",
-                    category = "Presentes",
-                    description = "Presente pro Sonar",
-                    value = 15.00,
-                    date = "28/11/2023",
-                    periodicity = "Único",
-                )
-            )
-            _transactions.value = transactions
+            _transactions.value = spendings
         }
-        else if (uiState.value.currentSearch != ""){
-            val transactions = listOf(
-                Transaction(
-                    id = "1",
-                    category = "Salário",
-                    description = "NFT",
-                    value = 20000.00,
-                    date = "Hoje 02/12/2023",
-                    periodicity = "Mensal",
-                ),
-                Transaction(
-                    id = "2",
-                    category = "Presentes",
-                    description = "Aniversário",
-                    value = 350.00,
-                    date = "Hoje 02/12/2023",
-                    periodicity = "Único",
-                ),
-                Transaction(
-                    id = "3",
-                    category = "Outros",
-                    description = "Bet",
-                    value = 50.30,
-                    date = "Ontem 01/12/2023",
-                    periodicity = "Único",
-                )
-            )
-            _transactions.value = transactions
+        else {
+            _transactions.value = revenues
         }
-        else _transactions.value = null
     }
 }

@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.infinitymoneymanager.databaseClasses.revenues
+import com.example.infinitymoneymanager.databaseClasses.spendings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -126,16 +128,35 @@ class AddTransactionViewModel : ViewModel() {
     }
 
     fun addTransactionToDB(
+        //TODO: adicionar as infos pro BD. Fiz um código simulado só pra fins de teste
+        // Se quiser pode apagar o arquivo transactions.kt que criei só pra fazer o teste
         isSpending: Boolean //true se for gasto, false se for ganho
         // ...
     ) {
-        // TODO: adicionar dados informados para o banco de dados
-        // Variáveis correspontes a cada informação:
-        // valor: transactionValue
-        // data: date
-        // descrição: description
-        // categoria: _uiState.value.categoryName
-        // recorrência: _uiState.value.recurrenceName
+        if (isSpending) {
+            spendings.add(
+                Transaction(
+                    id = "?",
+                    category = uiState.value.categoryName,
+                    description = description,
+                    value = transactionValue.toDouble(),
+                    date = date,
+                    periodicity = uiState.value.recurrenceName,
+                )
+            )
+        }
+        else {
+            revenues.add(
+                Transaction(
+                    id = "?",
+                    category = uiState.value.categoryName,
+                    description = description,
+                    value = transactionValue.toDouble(),
+                    date = date,
+                    periodicity = uiState.value.recurrenceName,
+                )
+            )
+        }
     }
 
     fun clickAddTransaction(
@@ -155,11 +176,11 @@ class AddTransactionViewModel : ViewModel() {
             }
         }
         else {
-            resetViewModel()
-            navController.navigate(route)
             addTransactionToDB(
                 isSpending = isSpending
             )
+            resetViewModel()
+            navController.navigate(route)
         }
     }
 }
