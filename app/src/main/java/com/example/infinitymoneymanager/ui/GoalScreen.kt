@@ -24,37 +24,80 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.result.Result
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-val goals = listOf(
+interface MetaResponseCallback {
+    fun onSuccess(metas: List<Meta>)
+    fun onFailure(error: String)
+}
+
+var goals = listOf(
     Meta(
         nome = "Carro novo",
         valorAlvo = 75000.0,
         valorArrecadado = 33750.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(800).toString()),
+        prazo = "10/09/2023",
         id = 0
     ),
     Meta(
         nome = "Troca de celular",
         valorAlvo = 4199.0,
         valorArrecadado = 3359.2,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(120).toString()),
+        prazo = "10/09/2023",
         id = 1
     ),
     Meta(
         nome = "Entrada do apartamento",
         valorAlvo = 150000.0,
         valorArrecadado = 12000.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(1500).toString()),
+        prazo = "10/09/2023",
         id = 2
     ),
     Meta(
         nome = "Viagem de final de ano",
         valorAlvo = 16000.0,
         valorArrecadado = 3420.0,
-        prazo = java.sql.Date.valueOf(LocalDate.now().plusDays(15).toString()),
+        prazo = "10/09/2023",
         id = 3
     )
 )
+class YourClass {
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    fun fetchMetas(callback: MetaResponseCallback) {
+        coroutineScope.launch {
+            val url = "http://172.17.0.1:9000/finance/metas"
+            Fuel.get(url).response { _, _, result ->
+                when (result) {
+                    is Result.Failure -> {
+                        val error = result.getException().message ?: "Unknown error"
+                        callback.onFailure(error)
+                    }
+                    is Result.Success -> {
+                        val data = String(result.get())
+                        val gson = Gson()
+                        val itemType = object : TypeToken<List<Meta>>() {}.type
+                        val metas: List<Meta> = gson.fromJson(data, itemType)
+                        callback.onSuccess(metas)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
 fun formatCurrency(value: Double): String {
     val numberFormat = NumberFormat.getCurrencyInstance()
     return numberFormat.format(value)
@@ -94,6 +137,21 @@ fun GoalScreen(navController: NavController) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
+
+        val yourClassInstance = YourClass()
+
+        yourClassInstance.fetchMetas(object : MetaResponseCallback {
+            override fun onSuccess(metas: List<Meta>) {
+                println("asdasdas")
+                goals = metas
+            }
+
+            override fun onFailure(error: String) {
+                println("asdasdfas")
+                // Handle error
+
+            }
+        })
 
         Row {
             val goalsSize = if (goals.isEmpty()) "Nenhuma meta"
@@ -219,7 +277,7 @@ fun GoalCard(
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Text(
-                text = getRemainingTime(goal.getPrazo()),
+                text = goal.getPrazo(),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -297,6 +355,17 @@ fun NewGoalButton(
 @Preview(showBackground = true)
 @Composable
 fun GoalCardPreview() {
+    val yourClassInstance = YourClass()
+
+    yourClassInstance.fetchMetas(object : MetaResponseCallback {
+        override fun onSuccess(metas: List<Meta>) {
+            goals = metas
+        }
+
+        override fun onFailure(error: String) {
+            // Handle error
+        }
+    })
     GoalCard(
         goal = goals[0],
         navController = rememberNavController()

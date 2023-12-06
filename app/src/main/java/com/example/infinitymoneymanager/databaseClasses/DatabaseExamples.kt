@@ -14,17 +14,10 @@ class DatabaseExamples {
             20,
             "Teste", 2.00,
             1.00,
-            Date(11000)
+
+            "10/09/2023",
         )
         DatabaseManager.insert(meta)
-
-        DatabaseManager.closeConnection()
-    }
-
-    fun deleteExample(){
-        DatabaseManager.openConnection()
-
-        DatabaseManager.delete(Meta(), "id > 5 AND id < 12")
 
         DatabaseManager.closeConnection()
     }

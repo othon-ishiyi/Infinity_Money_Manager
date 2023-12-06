@@ -9,10 +9,15 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.infinitymoneymanager.databaseClasses.revenues
 import com.example.infinitymoneymanager.databaseClasses.spendings
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.Headers
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
+import java.nio.charset.Charset
 
 data class Recurrence(
     val unique: Boolean,
@@ -127,6 +132,34 @@ class AddTransactionViewModel : ViewModel() {
         }
     }
 
+    data class TransactionPost(
+        val periodicidade: String,
+        val valor: Double,
+        val categoria: String,
+        val descricao: String,
+        val data: String,
+        val metasId: Int
+    )
+
+    fun postTransaction(transactionData: TransactionPost, url: String) = runBlocking {
+        val json = Gson().toJson(transactionData)
+
+        Fuel.post(url)
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json, Charset.forName("UTF-8")) // Explicitly specify the charset
+            .response { _, response, result ->
+                when (result) {
+                    is com.github.kittinunf.result.Result.Failure -> {
+                        val error = result.getException()
+                        println("Error: ${error.message}")
+                    }
+                    is com.github.kittinunf.result.Result.Success -> {
+                        println("Posted successfully: ${String(response.data)}")
+                    }
+                }
+            }
+    }
+
     fun addTransactionToDB(
         //TODO: adicionar as infos pro BD. Fiz um código simulado só pra fins de teste
         // Se quiser pode apagar o arquivo transactions.kt que criei só pra fazer o teste
@@ -134,6 +167,15 @@ class AddTransactionViewModel : ViewModel() {
         // ...
     ) {
         if (isSpending) {
+            postTransaction(
+                TransactionPost(
+                    periodicidade = uiState.value.recurrenceName,
+                    categoria = uiState.value.categoryName,
+                    descricao = description,
+                    valor = transactionValue.toDouble(),
+                    data = date,
+                    metasId = 1
+                ), "http://172.17.0.1:9000/finance/gastos")
             spendings.add(
                 Transaction(
                     id = "?",
@@ -142,10 +184,20 @@ class AddTransactionViewModel : ViewModel() {
                     value = transactionValue.toDouble(),
                     date = date,
                     periodicity = uiState.value.recurrenceName,
+
                 )
             )
         }
         else {
+            postTransaction(
+                TransactionPost(
+                    periodicidade = uiState.value.recurrenceName,
+                    categoria = uiState.value.categoryName,
+                    descricao = description,
+                    valor = transactionValue.toDouble(),
+                    data = date,
+                    metasId = 1
+                ), "http://172.17.0.1:9000/finance/ganhos-fixos")
             revenues.add(
                 Transaction(
                     id = "?",

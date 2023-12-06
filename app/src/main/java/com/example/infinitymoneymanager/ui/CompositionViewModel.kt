@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModel
 import com.example.infinitymoneymanager.databaseClasses.revenues
 import com.example.infinitymoneymanager.databaseClasses.spendings
@@ -28,6 +29,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.result.Result
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 data class CompositionUiState(
     val isSpending: Boolean = true,
     val currentSearch: String = ""
@@ -68,7 +76,7 @@ class CompositionViewModel : ViewModel(){
     }
 
     fun getCategoryIcon(
-        //TODO: substituir por uma função que inclua os ícones não-default
+        //TODO: substituir por uma função que inclua os ícones não-default. RESPOSTA: Nao
         categoryName: String
     ): ImageVector {
         val categoryIconMap = mapOf(
@@ -88,15 +96,38 @@ class CompositionViewModel : ViewModel(){
         return categoryIconMap[categoryName]?: Icons.Filled.Error
     }
 
-    private fun getTransactions(
-        /*TODO: substituir pela função integrada com o back-end*/
-        // Se quiser pode apagar o arquivo transactions.kt que criei só pra fazer testes
-    ){
-        if(_uiState.value.isSpending) {
-            _transactions.value = spendings
-        }
-        else {
-            _transactions.value = revenues
+    private fun getTransactions() {
+        println("here")
+
+        viewModelScope.launch {
+            println("here1")
+
+            val url = if (_uiState.value.isSpending) {
+                "http://172.17.0.1:9000/finance/ganhos"
+            } else {
+                "http://172.17.0.1:9000/finance/gastos"
+            }
+            println("her3")
+
+            withContext(Dispatchers.IO) {
+                Fuel.get(url).response { _, _, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            val error = result.getException()
+                            println("Error: ${error.message}")
+                        }
+
+                        is Result.Success -> {
+                            val data = String(result.get())
+                            println(data)
+                            val gson = Gson()
+                            val itemType = object : TypeToken<List<Transaction>>() {}.type
+                            val transactions: List<Transaction> = gson.fromJson(data, itemType)
+                            _transactions.postValue(transactions)
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -7,5 +7,5 @@ plugins {
 }
 
 dependencies {
-    implementation("mysql:mysql-connector-java:8.1.0")
+    implementation(files(".\\mysql-connector-j-8.1.0.jar"))
 }

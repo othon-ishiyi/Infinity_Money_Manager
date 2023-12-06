@@ -8,7 +8,7 @@ class Meta(
     private var nome: String = "",
     private var valorAlvo: Double = 0.0,
     private var valorArrecadado: Double = 0.0,
-    private var prazo: Date = Date(0)
+    private var prazo: String
 ): DatabaseObject() {
     override val name: String
         get() = "Meta"
@@ -21,13 +21,12 @@ class Meta(
     fun getNome(): String {return nome}
     fun getValorAlvo(): Double {return valorAlvo}
     fun getValorArrecadado(): Double {return valorArrecadado}
-    fun getPrazo(): Date {return prazo}
+    fun getPrazo(): String {return "10/09/2023"}
 
     override fun setQueryVariables(query: PreparedStatement) {
         query.setInt(1, this.getId())
         query.setString(2, this.getNome())
         query.setDouble(3, this.getValorAlvo())
         query.setDouble(4, this.getValorArrecadado())
-        query.setDate(5, this.getPrazo())
     }
 }

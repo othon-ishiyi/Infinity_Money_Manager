@@ -23,6 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType.Companion.Number
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.Headers
+import com.github.kittinunf.result.Result
+import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,6 +55,32 @@ private fun validateData(nome: String, valorAlvo: String, valorArrecadado: Strin
             && (valorArrecadado.isEmpty() || valorArrecadado.matches(Regex(regexPattern)))
 }
 
+
+data class TransactionPost(
+    val nome: String,
+    val valorAlvo: String,
+    val valorArrecadado: String,
+    val prazo: String
+)
+
+fun postTransaction(transactionData: TransactionPost, url: String) = runBlocking {
+    val json = Gson().toJson(transactionData)
+
+    Fuel.post(url)
+        .header(Headers.CONTENT_TYPE, "application/json")
+        .body(json, Charset.forName("UTF-8")) // Explicitly specify the charset
+        .response { _, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    val error = result.getException()
+                    println("Error: ${error.message}")
+                }
+                is Result.Success -> {
+                    println("Posted successfully: ${String(response.data)}")
+                }
+            }
+        }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewGoalScreen() {
@@ -109,6 +141,7 @@ fun NewGoalScreen() {
                 confirmButton = {
                     Button(
                         onClick = {
+
                             datePickerState
                                 .selectedDateMillis?.let { millis ->
                                     prazo = millis.toBrazilianDateFormat()
@@ -116,6 +149,7 @@ fun NewGoalScreen() {
                             showDatePickerDialog = false
                         }) {
                         Text(text = "OK")
+
                     }
                 }
             ) {
@@ -143,7 +177,12 @@ fun NewGoalScreen() {
         Button(
             onClick = {
                 if (validateData(nome, valorAlvo, valorArrecadado,  prazo)) {
-                    // TODO: criar nova meta
+                    postTransaction(TransactionPost(
+                        nome = nome,
+                        valorAlvo = valorAlvo,
+                        valorArrecadado = valorArrecadado,
+                        prazo = prazo
+                    ), "http://172.17.0.1:9000/finance/metas")
                 }
 
             },
