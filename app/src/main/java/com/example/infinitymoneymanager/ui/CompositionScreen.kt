@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Flag
@@ -127,6 +128,7 @@ fun CompositionScreen(
 
         AllTransactions(
             transactions = compositionViewModel.transactions,
+            compositionViewModel = compositionViewModel,
             modifier = Modifier
         )
     }
@@ -135,6 +137,7 @@ fun CompositionScreen(
 @Composable
 fun AllTransactions(
     transactions: List<Transaction>?,
+    compositionViewModel: CompositionViewModel,
     modifier: Modifier = Modifier
 ) {
     if(transactions == null) {
@@ -149,6 +152,7 @@ fun AllTransactions(
                 DayTransactions(
                     date = date,
                     transactions = transactionList,
+                    compositionViewModel = compositionViewModel,
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_small))
                 )
@@ -161,6 +165,7 @@ fun AllTransactions(
 fun DayTransactions(
     date: String,
     transactions: List<Transaction>,
+    compositionViewModel: CompositionViewModel,
     modifier: Modifier = Modifier
 ) {
     // Returns a column of TransactionInfoCard objects
@@ -188,6 +193,7 @@ fun DayTransactions(
             transactions.forEach { transaction ->
                 TransactionInfoCard(
                     transaction = transaction,
+                    icon = compositionViewModel.getCategoryIcon(transaction.category),
                     modifier = Modifier
                 )
             }
@@ -196,21 +202,12 @@ fun DayTransactions(
     }
 }
 
-private fun getCategoryIcon(category: String): ImageVector{
-    /*TODO ajustar conforme os nomes de categorias utilizados no Banco de Dados*/
-    val categoryIconMap = mapOf(
-        "Alimentação" to Icons.Filled.Restaurant,
-        "Saúde" to Icons.Filled.HealthAndSafety,
-        "Educação" to Icons.Filled.School,
-        "Meta" to Icons.Filled.Flag
-    )
-     return categoryIconMap[category]?: Icons.Filled.Error
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionInfoCard(
     transaction: Transaction,
+    icon: ImageVector,
     modifier: Modifier = Modifier
 ) {
     // Returns a button with the informations about the transaction
@@ -228,7 +225,7 @@ fun TransactionInfoCard(
             modifier = Modifier.fillMaxSize()
         ){
             Icon(
-                imageVector = getCategoryIcon(transaction.category),
+                imageVector = icon,
                 contentDescription = transaction.category,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
